@@ -381,7 +381,7 @@ int main() {
             // After Mid Term submenu
             while (true) {
                 cout << "\n=== After Mid Term Options ===\n";
-                cout << "1. Generate the keys (Deffie Hellman)\n";
+                cout << "1. Generate the keys (Diffie Hellman)\n";
                 cout << "2. User Input (Encryption)\n";
                 cout << "3. Check Integrity And Authentication (Decrypt and verify)\n";
                 cout << "4. Return to Main Menu\n";
