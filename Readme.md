@@ -1,37 +1,77 @@
 # Secure Financial Transactions
 
-This project demonstrates a secure system for two users to exchange a shared secret key over an untrusted network using the Diffie-Hellman key exchange protocol. The shared secret key is then used for encrypting and decrypting sensitive financial transactions using AES encryption in CBC mode. Message integrity and authentication are ensured using SHA-256 hashing.
+This project demonstrates two different approaches to secure financial transactions using different key exchange protocols and encryption methods.
+
+## Menu Structure
+
+The application provides two main implementations:
+
+1. **Before Mid Term**
+   - Uses ECDH (Elliptic Curve Diffie-Hellman) for key exchange
+   - Simple encryption/decryption without integrity checks
+   - Focused on basic secure communication
+
+2. **After Mid Term**
+   - Uses traditional Diffie-Hellman key exchange
+   - Includes message integrity checks with SHA-256
+   - Provides complete verification of transaction authenticity
 
 ## Features
 
-- **Diffie-Hellman Key Exchange:** Securely generate a shared secret key using large prime numbers and a generator.
-- **AES Encryption (CBC Mode):** Encrypt financial transaction data using the shared secret key with proper handling of initialization vectors (IV).
-- **Message Integrity:** Use SHA-256 hashing to ensure the encrypted message has not been altered during transmission.
-- **Demonstration:** Sample financial transaction encryption and decryption with integrity verification.
+### Before Mid Term Implementation
+
+1. **ECDH Key Exchange:**
+   - Uses elliptic curve cryptography for efficient key exchange
+   - Generates public/private key pairs on the secp256k1 curve
+   - Computes shared secret using ECDH protocol
+
+2. **Operations:**
+   - Generate keys (ECDH)
+   - Encrypt user input (shows only encrypted value)
+   - Decrypt (shows decrypted value)
+
+### After Mid Term Implementation
+
+1. **Diffie-Hellman Key Exchange:**
+   - Uses a 2048-bit MODP group prime from RFC 3526
+   - Generator is set to 2
+   - Each party generates a private key and computes a public key
+   - Public keys are exchanged over the network
+   - Each party computes the shared secret
+
+2. **AES Encryption:**
+   - AES-256 in CBC mode
+   - Random 16-byte IV for each encryption
+   - IV transmitted with encrypted message
+   - Shared secret used to derive AES key
+
+3. **Message Integrity:**
+   - SHA-256 hash of the encrypted message
+   - Hash transmitted with encrypted message and IV
+   - Receiver verifies hash to ensure message integrity
 
 ## Implementation Details
 
-1. **Diffie-Hellman Parameters:**
-    - Uses a 2048-bit MODP group prime from RFC 3526.
-    - Generator is set to 2.
-    - Each party generates a private key and computes a public key.
-    - Public keys are exchanged over the network.
-    - Each party computes the shared secret using their private key and the other party's public key.
+### ECDH Implementation (Before Mid Term)
+- Uses OpenSSL's EC_KEY for ECC operations
+- Implements secure key generation and exchange
+- AES encryption using the derived shared secret
+- Simplified encryption/decryption process
 
-2. **AES Encryption:**
-    - AES-256 in CBC mode is used.
-    - A random 16-byte IV is generated for each encryption operation.
-    - The IV is transmitted along with the encrypted message.
-    - The shared secret is used to derive the AES key (first 32 bytes).
-
-3. **Message Integrity:**
-    - SHA-256 hash of the encrypted message is computed.
-    - The hash is transmitted along with the encrypted message and IV.
-    - The receiver verifies the hash to ensure message integrity.
+### Diffie-Hellman Implementation (After Mid Term)
+- Uses OpenSSL's BIGNUM for large number operations
+- Complete implementation of DH protocol
+- Includes integrity verification
+- Full transaction security with authentication
 
 ## Dependencies
 
-- OpenSSL library for cryptographic functions (BIGNUM, AES, SHA-256, random number generation).
+- OpenSSL library for cryptographic functions:
+   - BIGNUM (DH implementation)
+   - EC_KEY (ECDH implementation)
+   - AES
+   - SHA-256
+   - Random number generation
 
 ## Building the Project
 
@@ -51,14 +91,31 @@ Run the executable:
 ./SecureFinancialTransactions
 ```
 
-You will see output showing the public keys, shared secrets, encrypted transaction, IV, SHA-256 hash, and decrypted transaction.
+You will see a menu with options to choose between:
+1. Before Mid Term (ECDH implementation)
+2. After Mid Term (DH implementation)
+3. Exit
+
+### Before Mid Term Menu Options:
+1. Generate the keys (ECDH)
+2. User Input (Encryption only)
+3. Decrypt (show decrypted value)
+4. Return to Main Menu
+
+### After Mid Term Menu Options:
+1. Generate the keys
+2. User Input (Enter financial transaction data and encrypt)
+3. Check Integrity And Authentication (Decrypt and verify)
+4. Return to Main Menu
 
 ## Security Considerations
 
-- The Diffie-Hellman parameters are chosen to be secure against brute-force attacks.
-- AES encryption uses a fresh random IV for each encryption to ensure semantic security.
-- SHA-256 hashing ensures message integrity and detects tampering.
-- This is a demonstration and does not include network transmission code; in a real system, secure channels and authentication mechanisms should be used.
+- Both implementations use secure key exchange protocols
+- ECDH provides better performance with smaller key sizes
+- AES encryption ensures data confidentiality
+- SHA-256 hashing (in After Mid Term) ensures message integrity
+- This is a demonstration and does not include network transmission code
+- In a real system, secure channels and additional authentication mechanisms should be used
 
 ## License
 
